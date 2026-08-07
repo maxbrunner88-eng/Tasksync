@@ -128,13 +128,13 @@ Personalstammdaten + Verfügbarkeiten nach Supabase · Planungsregel XS = Claudi
 
 Dazu 6 bereits erledigte (Notizfeld pro Reinigung · Storno-BUG · Passwort-Gate vor Dashboard · Reinigungskalender editierbar · ENTSCHEIDUNG RK-Kalender · Retainer und Scope 24.07.). Die 36 Neuzugänge aus der M&M-DB bekommen das Label direkt beim Anlegen.
 
-### Unklar — bitte entscheiden
+### Entschieden
 
-| Aufgabe | aktuelle Labels | Frage |
-|---|---|---|
-| Automatisierter Trendscout (Social Media Themen, Formate & Trends) | — | Der Trendscout ist Teil des M&M AI-Marketing-Stacks. Label `Maison`? |
-| Meeting Minutes vom heutigen Meeting mit Nadine (erledigt) | `To do`, `@Nadine` | Nadine ⇒ Maison, aber ohne Präfix. Label nachtragen? |
-| Prompt für das Interview zur Personalisierung mit Nadine teilen (erledigt) | `To do`, `@Nadine` | dito |
+| Aufgabe | Entscheidung |
+|---|---|
+| Automatisierter Trendscout (Social Media Themen, Formate & Trends) | Label `Maison` — gehört zum M&M-Marketing-Stack |
+| Meeting Minutes vom Meeting mit Nadine *(erledigt)* | Label `Maison`. Der eigentliche Punkt daran ist größer und steht in Block 3d: Action Items aus den Protokollen werden künftig automatisch eingearbeitet. |
+| Prompt für das Interview zur Personalisierung *(erledigt)* | erledigt, bleibt wie es ist — kein Label nötig |
 
 „Teilnahme am Cologne Collective Day (Event von Philip) klären" hat korrekt **kein** Label und behält keines — das ist keine M&M-Aufgabe.
 
@@ -147,6 +147,34 @@ Mit dem Label als Marker ist `M&M: ` im Titel doppelte Information. Wird es entf
 > `Maison & Mood – Reinigungskalender editierbar machen …` → `Reinigungskalender editierbar machen …`
 
 Das mache ich **nur auf deine Freigabe** — es ändert 19 Titel, die du seit Juli so liest. Ohne Freigabe bleiben die Präfixe stehen und werden beim Matching lediglich ignoriert.
+
+---
+
+## 3d · Action Items aus den Jour Fixes
+
+Neue Quelle im Sync: die DB **📞 Calls — Maison & Mood**. Aus jedem Protokoll mit `Status = Nachbereitet` werden die Checkbox-Zeilen unter „Action Items" gelesen, nach Owner (`**Max:**` / `**Nadine:**`) zugeordnet und mit `Quelle = JF <TT.MM.>` in die M&M-DB geschrieben. Von dort greift die normale Routung nach Superlist.
+
+Die Protokollseite selbst wird **nie verändert** — sie ist das Protokoll des Gesprächs, kein Aufgabenspeicher.
+
+### Gegenprobe am Jour Fixe 05.08.
+
+Deine bisherige Handarbeit ist gut: von 18 Action Items stehen **13 in der DB**, darunter alle 10 auf deiner Seite. **Fünf fehlen** — vier davon bei Nadine:
+
+| fehlendes Item | Owner |
+|---|---|
+| Steuerberater treten: Format Stundenzettel + Juli-Stand fürs Stundenkonto | Nadine |
+| Neue Freigabe / API-Key an Max schicken | Nadine |
+| Google Suite abschalten, sobald Max' Signal kommt | Nadine |
+| Early-Check-in: überlegen, ob und wie (15–20 € Aufpreis) | Nadine |
+| Neue Minijob-Kraft im System anlegen (Stammdaten + Telegram) | Max |
+
+Das letzte stammt aus dem Nachtrag-Abschnitt und stand dort als Fließtext, nicht als Checkbox — genau die Sorte Punkt, die beim Abtippen durchrutscht. Ab jetzt fängt der Sync das ab.
+
+### Zwei Dinge, die dafür noch fehlen
+
+**Die `Quelle`-Optionen sind veraltet.** Das Select-Feld kennt nur `JF 12.05.`, `JF 28.05.`, `JF 16.06.`, `JF 09.07.` und `Backlog` — für die Jour Fixes vom **22.07.** und **05.08.** gibt es keine Option. Deshalb liegen 59 Aufgaben unter „Backlog" und 42 unter „JF 09.07.", obwohl sie teils aus späteren Calls stammen. Ich ergänze `JF 22.07.` und `JF 05.08.` beim `--init`; der Sync legt im laufenden Betrieb nie eigenmächtig Select-Optionen an.
+
+**Idempotenz bei stündlichem Takt.** Ein Protokoll darf nicht 24× am Tag neu ausgewertet werden, sonst entstehen Duplikate. `state/links.json` merkt sich pro Call `pageId` und `lastEdited`; neu gelesen wird nur bei geändertem Protokoll.
 
 ---
 
@@ -206,13 +234,14 @@ Ab dem stündlichen Normalbetrieb liegt ein Lauf typischerweise bei null bis fü
 
 ## Nächster Schritt
 
-Ich brauche noch fünf Antworten:
+Ich brauche noch vier Antworten:
 
 1. **Block 3** — die 9 Fuzzy-Vorschläge und die 3 mehrdeutigen Fälle: bestätigen oder verwerfen?
 2. **Block 3b** — Titel-Angleichung wie vorgeschlagen, inkl. der einen Ausnahme bei „Retail Media Data Sharing"?
-3. **Block 3c** — die 3 unklaren Label-Fälle (Trendscout, die zwei Nadine-Aufgaben).
-4. **Block 3c** — Präfix `M&M: ` aus den 19 Titeln entfernen? (Ohne Freigabe bleibt es stehen.)
-5. **Block 4** — die 4 Karteileichen: noch relevant oder abhaken?
+3. **Block 3c** — Präfix `M&M: ` aus den 19 Titeln entfernen? (Ohne Freigabe bleibt es stehen.)
+4. **Block 4** — die 4 Karteileichen: noch relevant oder abhaken?
+
+Die Label-Fälle aus Block 3c sind entschieden. Block 3d (Action Items aus den Jour Fixes) ist eingebaut; die 5 fehlenden Items vom 05.08. lege ich mit dem ersten Schreiblauf an.
 
 Bei **Block 5** ist entschieden (alle 36 nach Advisory) — sag nur Bescheid, falls die 2 „Idee:"-Zeilen und die 6 blockierten draußen bleiben sollen.
 

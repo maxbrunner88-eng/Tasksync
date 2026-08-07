@@ -98,7 +98,24 @@
         "lastEditedProp": "Zuletzt bewegt",
         "syncKeyProp": "Sync Key"
       },
-      "$statusProp": "NICHT anfassen. 'Erledigt' ist laut Property-Beschreibung die einzige Wahrheit fuer erledigt/nicht erledigt; 'Status' ist orthogonal (viele Zeilen: Erledigt=YES bei Status=Offen)."
+      "$statusProp": "NICHT anfassen. 'Erledigt' ist laut Property-Beschreibung die einzige Wahrheit fuer erledigt/nicht erledigt; 'Status' ist orthogonal (viele Zeilen: Erledigt=YES bei Status=Offen).",
+
+      "meetings": {
+        "dataSource": "collection://c64a606f-6820-494f-9d4c-911090e3ac8e",
+        "databaseUrl": "https://app.notion.com/p/c978ad4feee241a485f5cfd14ede4fa8",
+        "titleProp": "Call",
+        "dateProp": "Datum",
+        "statusProp": "Status",
+        "readyStatus": "Nachbereitet",
+        "$readyStatus": "Nur nachbereitete Calls werden ausgewertet. 'Offen' und 'Vorbereitet' enthalten noch keine belastbaren Action Items.",
+        "actionItemHeadings": ["Action Items", "Aktionspunkte", "Nachtrag"],
+        "ownerHeadings": { "Max": "Max", "Nadine": "Nadine", "Gemeinsam": "Gemeinsam" },
+        "$ownerHeadings": "Fettgedruckte Zeilen wie '**Max:**' unter der Action-Items-Ueberschrift bestimmen den Owner der folgenden Checkboxen.",
+        "quellePrefix": "JF ",
+        "$quellePrefix": "Aus dem Call-Datum wird der Quelle-Wert gebildet: 05.08.2026 -> 'JF 05.08.'. ACHTUNG: die Select-Optionen der Quelle-Property enden aktuell bei 'JF 09.07.' — neuere Werte muessen per --init ergaenzt werden, sonst bleibt Quelle leer.",
+        "writeBackToMeetingPage": false,
+        "$writeBackToMeetingPage": "Die Meeting-Notiz ist das Protokoll des Gespraechs und wird nie veraendert. Reine Lesequelle."
+      }
     },
     "marko-schilling": {
       "name": "🏗️ Marko Schilling Bauunternehmen",

@@ -2,5 +2,7 @@
   "version": 1,
   "lastRun": null,
   "note": "Verknuepfungstabelle zwischen Superlist, Notion Master Tasks und den Kunden-Aufgaben-DBs. Superlist kann keine Fremdschluessel tragen — die Superlist-Seite jeder Verknuepfung existiert NUR hier. Nach jedem Lauf committen. Ist diese Datei leer oder kaputt, faehrt /tasksync den Erstlauf und schreibt nichts.",
-  "links": []
+  "links": [],
+  "processedMeetings": [],
+  "$processedMeetings": "Je ausgewerteter Meeting-Notiz ein Eintrag {pageId, lastEdited, itemCount}. Verhindert, dass der stuendliche Lauf dieselben Action Items immer wieder anlegt. Neu ausgewertet wird nur bei geaendertem lastEdited."
 }

@@ -184,6 +184,42 @@ Eine Aufgabe kann Labels mehrerer Kunden tragen — dann gilt sie fuer beide und
 
 Fuer jeden Neuzugang einen `key` vergeben (`tsk_` + 8 Hexzeichen, kollisionsfrei gegen die Registry) und ihn in den Notion-Zeilen als `Sync Key` setzen.
 
+## Schritt 6b — Action Items aus Meeting-Notizen
+
+Nach jedem Jour Fixe entstehen Aufgaben im Protokoll. Bisher wandern sie von Hand in die Kunden-DB; das uebernimmt der Sync. Gilt fuer jeden Kunden mit einem `meetings`-Block in der Config.
+
+**Lesen.** Calls mit `Status == readyStatus` („Nachbereitet") aus `meetings.dataSource` holen, absteigend nach `Datum`. Jede Seite mit `notion-fetch` lesen.
+
+**Extrahieren.** Unter den Ueberschriften aus `actionItemHeadings` stehen Checkbox-Zeilen, gruppiert nach fettgedruckten Owner-Zeilen:
+
+```
+## Action Items
+**Max:**
+- [ ] Verschoben-Text ins Tagespopup
+- [ ] Sina-Absender „Maison" → „Sina"
+**Nadine:**
+- [ ] Early-Check-in: überlegen, ob und wie
+```
+
+Daraus wird je Zeile: Titel = Text der Checkbox, `Owner` = letzter Owner-Header darueber, `Quelle` = `quellePrefix` + Call-Datum in `TT.MM.` (05.08.2026 → `JF 05.08.`), `Erledigt` = `__YES__` bei `- [x]`.
+
+Ein Protokoll enthaelt haeufig auch einen **Nachtrag**-Abschnitt mit spaeter ergaenzten Punkten (etwa aus einem Transkript-Abgleich). Diese Zeilen stehen nicht immer als Checkbox, sondern als Fliesstext mit Owner in Klammern — etwa *„Neue Minijob-Kraft ab Sa 08.08. muss im System angelegt werden (Max)."* Solche Punkte gehoeren dazu, sind aber Auslegung: sie kommen in den Report zur Bestaetigung, nicht direkt in die DB.
+
+**Abgleichen.** Jedes Item gegen die bestehenden Kunden-DB-Zeilen normalisiert matchen (Schritt 3). Treffer → nichts tun, hoechstens `Quelle` nachtragen, falls leer. Kein Treffer → neue Zeile in der Kunden-DB anlegen, mit `Owner`, `Quelle`, `Bereich` (aus dem Kontext, sonst leer). Von dort greift die normale Routung: Owner ∈ `customerOwnerScope` → geht weiter nach Superlist und Master Tasks.
+
+**Idempotenz — der kritische Punkt.** Bei stuendlichem Lauf darf ein Protokoll nicht in jeder Runde neu ausgewertet werden. In `links.json` unter `processedMeetings` je Call festhalten: `pageId`, `lastEdited` und die Zahl der extrahierten Items. Ein Call wird nur neu ausgewertet, wenn sich `lastEdited` geaendert hat. Fehlt der Eintrag, gilt der Call als unverarbeitet.
+
+**Nie in die Meeting-Notiz schreiben** (`writeBackToMeetingPage: false`). Sie ist das Protokoll des Gespraechs — kein Aufgabenspeicher. Die Checkboxen dort bleiben, wie du sie gesetzt hast, auch wenn die Aufgabe laengst erledigt ist.
+
+**Quelle-Optionen.** Die Select-Property `Quelle` in der M&M-DB kennt aktuell nur Werte bis `JF 09.07.`. Fehlt die Option fuer ein neueres Datum, laesst der Sync `Quelle` leer und meldet es — er legt keine Select-Optionen im laufenden Betrieb an. Ergaenzt werden sie mit `--init`:
+
+```
+notion-update-data-source
+  data_source_id: <customers.<k>.tasksDataSource>
+  statements: ALTER COLUMN "Quelle" SET SELECT('JF 09.07.':green, …, 'JF 22.07.':blue, 'JF 05.08.':blue, 'Backlog':gray)
+```
+Bestehende Optionen dabei vollstaendig mitschicken, sonst gehen sie verloren.
+
 ## Schritt 7 — Schreiben
 
 **Vor dem ersten Schreibvorgang** die Gesamtzahl geplanter Schreibvorgaenge zaehlen. Ist sie groesser als `policy.maxWritesPerRun` und `--force` wurde nicht gesetzt: **abbrechen**, nichts schreiben, Report mit der vollstaendigen Liste erzeugen und den Nutzer fragen. Das ist die Sicherung gegen einen Registry-Verlust.
