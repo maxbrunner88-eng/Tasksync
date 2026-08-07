@@ -9,6 +9,14 @@ Dieses Skill ist der Sync-Motor. Superlist ist ausschliesslich ueber MCP erreich
 
 Alle IDs, Property-Namen und Regeln stehen in `config/sync.config.json`. Lies die Datei zuerst. Erfinde niemals eine ID.
 
+Drei Leitsaetze, aus denen sich fast alles Uebrige ergibt:
+
+1. **Superlist ist das Haupttool.** Dort arbeitet der Nutzer. Der vollstaendige offene Bestand gehoert dorthin; bei Gleichstand gewinnt Superlist.
+2. **Kunden-Aufgaben-DBs sind mit dem Kunden geteilt.** Dort steht ausschliesslich, was diesen Kunden betrifft — nie die uebrigen Arbeitsaufgaben des Nutzers.
+3. **Eine Aufgabe, ein Titel.** Der Sync gleicht Titel ueber alle Stores hinweg an, damit auf einen Blick erkennbar ist, welche Eintraege dasselbe meinen.
+
+Der Lauf ist auf **stuendlich** ausgelegt (`policy.schedule`). Die Drift zwischen zwei Laeufen ist dadurch klein — ein normaler Lauf schreibt selten mehr als eine Handvoll Aenderungen.
+
 ## Betriebsarten
 
 | Aufruf | Verhalten |
@@ -107,7 +115,24 @@ Bei `conflictRule == "newestWins"`: der juengste Zeitstempel gewinnt (`updated_a
 
 **Faelligkeit:** frueheste gesetzte Faelligkeit gewinnt. Haben sich seit `lastSeen` zwei Seiten unterschiedlich geaendert → nicht schreiben, unter „Konflikt Faelligkeit" melden.
 
-**Titel:** nur nachziehen, wenn sich seit `lastSeen` **genau eine** Seite geaendert hat. Sonst melden, nicht schreiben. Beim Schreiben in eine Kunden-DB den `writePrefix` entfernen, beim Schreiben nach Superlist ihn setzen.
+**Titel — aktiv angleichen** (`policy.titlePolicy == "canonical"`):
+
+Jeder Link fuehrt **einen** kanonischen Titel, der in `links.json` unter `canonicalTitle` steht — ohne Kundenpraefix. Zweck: der Nutzer soll auf einen Blick erkennen, welche Eintraege dieselbe Aufgabe sind. Abweichende Titel in einzelnen Stores werden **korrigiert**, nicht toleriert.
+
+Kanonischen Titel bestimmen:
+1. Hat sich seit `lastSeen` genau eine Seite geaendert → deren Titel wird kanonisch.
+2. Haben sich mehrere geaendert → der Titel aus dem Store mit dem juengsten Zeitstempel; bei Gleichstand gewinnt **Superlist** (`policy.leadStore`).
+3. Hat sich nichts geaendert → `canonicalTitle` bleibt.
+
+Danach das Kundenpraefix abziehen, falls vorhanden, und den kanonischen Titel in jeden Store schreiben, dessen Titel abweicht:
+
+| Store | geschriebener Titel |
+|---|---|
+| Superlist | `<writePrefix><canonicalTitle>` bei Links mit Kunde, sonst `<canonicalTitle>` |
+| Master Tasks | `<canonicalTitle>` |
+| Kunden-DB | `<canonicalTitle>` (dort ist ohnehin alles vom selben Kunden, das Praefix waere Rauschen) |
+
+Im **Erstlauf** wird jeder abweichende Titel im Report gelistet — alt → neu, pro Store. Erst nach Freigabe geschrieben. Im Normalbetrieb laeuft die Angleichung ohne Rueckfrage.
 
 **Prioritaet:** ueber `priorityMap` uebersetzen; bei Konflikt die hoehere gewinnt.
 
@@ -115,12 +140,31 @@ Bei `conflictRule == "newestWins"`: der juengste Zeitstempel gewinnt (`updated_a
 
 | Neu in | Anlegen in |
 |---|---|
-| Superlist-Liste `L` | Master Tasks mit `Area = L`. Traegt der Titel ein Kundenpraefix aus `customers.*.titlePrefixes` und der Kunde hat eine Aufgaben-DB → zusaetzlich dort mit `Owner = Max`. |
+| Superlist-Liste `L` | Master Tasks mit `Area = L`. In eine Kunden-DB **nur**, wenn der Kundenthemen-Test unten bestanden ist. |
 | Master Tasks, `Area = L` | Superlist-Liste `L` |
 | Kunden-DB, `Owner` ∈ `policy.customerOwnerScope` | Superlist (Liste laut `customers.<k>.superlistList`, Titel mit `writePrefix`) **und** Master Tasks mit passender `Area` |
 | Kunden-DB, `Owner` ausserhalb des Scope | **nichts anlegen.** Nur unter „Beim Kunden offen" in den Report. |
 
 Bereits erledigte Neuzugaenge werden **nicht** in andere Stores kopiert — nur registriert. Sonst regnet es abgehakte Altlasten.
+
+### Kundenthemen-Test — wann darf in eine Kunden-DB geschrieben werden
+
+Eine Kunden-Aufgaben-DB ist **mit dem Kunden geteilt** und enthaelt ausschliesslich Themen dieses Kunden. Max' uebrige Arbeitsaufgaben duerfen dort **nie** auftauchen.
+
+Der Sync legt in `customers.<k>.tasksDataSource` nur dann eine Zeile an, wenn **beide** Bedingungen erfuellt sind:
+
+1. die Superlist-Aufgabe liegt in `customers.<k>.superlistList` (fuer Maison & Mood: 🟢 Advisory), **und**
+2. ihr Titel traegt ein Praefix aus `customers.<k>.titlePrefixes` (`M&M:`, `M&M BUG:`, …).
+
+Eine Bedingung allein genuegt nicht. Konsequenzen, die so gewollt sind:
+
+- Aufgaben aus 🔵 Kaufland, 🟣 Private und 🟠 Home erreichen **niemals** eine Kunden-DB — auch nicht mit passendem Praefix.
+- Aufgaben in 🟢 Advisory ohne Kundenpraefix (etwa „Teilnahme am Cologne Collective Day klaeren") bleiben Superlist und Master Tasks vorbehalten.
+- Willst du eine Aufgabe bewusst beim Kunden sichtbar machen, setzt du in Superlist das Praefix `M&M: ` davor. Das ist der Schalter.
+
+Aufgaben, die **in** der Kunden-DB entstanden sind, gehen immer nach Superlist — diese Richtung ist unbeschraenkt. Die Einschraenkung gilt nur fuer Schreibvorgaenge **in** die Kunden-DB.
+
+Steht `policy.customerDbWrite` auf `never`, werden in Kunden-DBs ueberhaupt keine Zeilen angelegt; die Richtung Kunde → Superlist laeuft weiter.
 
 Fuer jeden Neuzugang einen `key` vergeben (`tsk_` + 8 Hexzeichen, kollisionsfrei gegen die Registry) und ihn in den Notion-Zeilen als `Sync Key` setzen.
 
@@ -187,4 +231,5 @@ Wenn `state/links.json` keine Links enthaelt: **nichts schreiben**, unabhaengig 
 - **Niemals mit unvollstaendig gelesenen Daten schreiben.**
 - **Niemals den Schreib-Deckel ohne ausdrueckliche Ansage des Nutzers ueberschreiten.**
 - **Niemals `Status` in einer Kunden-DB schreiben.**
+- **Niemals eine Aufgabe in eine Kunden-DB schreiben, die den Kundenthemen-Test nicht besteht.** Die DB ist mit dem Kunden geteilt — was dort landet, sieht der Kunde. Im Zweifel: nicht schreiben, in den Report.
 - **Niemals eine UUID oder Data-Source-ID raten** — alles steht in der Config.

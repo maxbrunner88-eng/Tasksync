@@ -2,14 +2,33 @@
   "$comment": "TaskSync — Konfiguration. Alle IDs sind am 07.08.2026 aus den Live-Systemen ermittelt. Die vier 'policy'-Werte sind die im Plan angenommenen Defaults und hier ohne Codeänderung umschaltbar.",
 
   "policy": {
+    "leadStore": "superlist",
+    "$leadStore": "Superlist ist das Haupttool. Der vollstaendige offene Bestand gehoert dorthin; bei Gleichstand gewinnt Superlist.",
+
     "notionSource": "masterTasks",
     "$notionSource": "masterTasks | newSyncDb | customersOnly",
 
     "customerOwnerScope": ["Max", "Gemeinsam"],
     "$customerOwnerScope": "Welche Owner-Werte aus den Kunden-DBs nach Superlist fliessen. Nicht gelistete Owner (z.B. Nadine) erscheinen nur im Report.",
 
+    "customerDbWrite": "customerTopicsOnly",
+    "$customerDbWrite": "customerTopicsOnly | never. Eine Kunden-Aufgaben-DB ist mit dem Kunden geteilt und enthaelt ausschliesslich Themen dieses Kunden. Der Sync legt dort NUR an, wenn die Aufgabe eindeutig zu diesem Kunden gehoert (siehe customerTopicTest). Max' uebrige Arbeitsaufgaben landen dort nie.",
+
+    "customerTopicTest": {
+      "requireSuperlistList": true,
+      "$requireSuperlistList": "Die Superlist-Aufgabe muss in der Liste liegen, die dem Kunden zugeordnet ist (customers.<k>.superlistList).",
+      "requireTitlePrefix": true,
+      "$requireTitlePrefix": "UND der Titel muss ein Kundenpraefix aus customers.<k>.titlePrefixes tragen. Beide Bedingungen zusammen, nie nur eine."
+    },
+
+    "titlePolicy": "canonical",
+    "$titlePolicy": "canonical | perStore. Bei 'canonical' fuehrt der Sync EINEN Titel pro Aufgabe in allen Stores. Ziel: der Nutzer erkennt auf einen Blick, welche Eintraege dieselbe Aufgabe sind.",
+
     "conflictRule": "doneWins",
     "$conflictRule": "doneWins | newestWins",
+
+    "schedule": "hourly",
+    "$schedule": "Stuendlicher Lauf. Die Tagesdrift ist dadurch klein; der Schreib-Deckel greift im Normalbetrieb nie.",
 
     "neverReopen": true,
     "neverDelete": true,
