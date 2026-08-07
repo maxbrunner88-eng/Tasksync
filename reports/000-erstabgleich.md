@@ -111,6 +111,45 @@ In den Kunden-DBs wird der Titel **ohne** `M&M: `-Präfix geschrieben — dort i
 
 ---
 
+## 3c · Kundenlabel in Advisory
+
+Der Kundenbezug wird ab jetzt über das **Label** geführt, nicht über ein Titelpräfix. In Advisory laufen dafür aktuell zwei Konventionen nebeneinander — und **keine Aufgabe trägt beide**:
+
+| Konvention | Anzahl | Beispiel |
+|---|---:|---|
+| Label `Maison` gesetzt, kein Präfix | 21 | „Website-Relaunch Maison & Mood mit SEO + GEO scoping" |
+| Präfix `M&M: ` im Titel, **kein Label** | 19 | „M&M: Datenklassen-Doku (halbe Seite) schreiben" |
+
+### Label nachtragen — 19 Aufgaben
+
+Alle mit `M&M: `-Präfix bekommen das Label `Maison`. Davon 13 offene:
+
+Personalstammdaten + Verfügbarkeiten nach Supabase · Planungsregel XS = Claudia-only · Deploy auf Git-Build umstellen · RK-Kalender Filterleiste entfernen · Datenklassen-Doku · Creator-Radar nach Supabase · Apify-Plan entscheiden · Spiegel-Workflow Sheet → Supabase · tokens.css beiden Sessions · Passwort-Gate (Netlify Edge Function) · UUID-Spalten im Sheet · Supabase-Schema fixieren · Domänenmodell model.ts
+
+Dazu 6 bereits erledigte (Notizfeld pro Reinigung · Storno-BUG · Passwort-Gate vor Dashboard · Reinigungskalender editierbar · ENTSCHEIDUNG RK-Kalender · Retainer und Scope 24.07.). Die 36 Neuzugänge aus der M&M-DB bekommen das Label direkt beim Anlegen.
+
+### Unklar — bitte entscheiden
+
+| Aufgabe | aktuelle Labels | Frage |
+|---|---|---|
+| Automatisierter Trendscout (Social Media Themen, Formate & Trends) | — | Der Trendscout ist Teil des M&M AI-Marketing-Stacks. Label `Maison`? |
+| Meeting Minutes vom heutigen Meeting mit Nadine (erledigt) | `To do`, `@Nadine` | Nadine ⇒ Maison, aber ohne Präfix. Label nachtragen? |
+| Prompt für das Interview zur Personalisierung mit Nadine teilen (erledigt) | `To do`, `@Nadine` | dito |
+
+„Teilnahme am Cologne Collective Day (Event von Philip) klären" hat korrekt **kein** Label und behält keines — das ist keine M&M-Aufgabe.
+
+### Vorschlag: Präfix aus den Titeln entfernen
+
+Mit dem Label als Marker ist `M&M: ` im Titel doppelte Information. Wird es entfernt, ist der Superlist-Titel **zeichengleich** mit dem Notion-Titel — genau das, was du mit „damit ich verstehe welche Aufgaben gleich sind" wolltest. Betrifft 19 Titel:
+
+> `M&M: Datenklassen-Doku (halbe Seite) schreiben` → `Datenklassen-Doku (halbe Seite) schreiben`
+> `M&M BUG: Storno sendet 4 identische Nachrichten` → `Storno sendet 4 identische Nachrichten`
+> `Maison & Mood – Reinigungskalender editierbar machen …` → `Reinigungskalender editierbar machen …`
+
+Das mache ich **nur auf deine Freigabe** — es ändert 19 Titel, die du seit Juli so liest. Ohne Freigabe bleiben die Präfixe stehen und werden beim Matching lediglich ignoriert.
+
+---
+
 ## 4 · Alt-Triage — Karteileichen in Master Tasks
 
 Offen in Master Tasks, kein Gegenstück in Superlist, zuletzt bewegt vor dem Umstieg. Diese werden **nicht** automatisch nach Superlist gespiegelt. Noch relevant?
@@ -142,7 +181,7 @@ Die M&M-Aufgaben-DB ist mit Nadine geteilt und bleibt deshalb frei von deinen ü
 - alle 🟠 Home- und 🟣 Private-Aufgaben
 - Advisory-Aufgaben **ohne** `M&M:`-Präfix — etwa „Teilnahme am Cologne Collective Day klären" oder „Automatisierter Trendscout (Social Media Themen, Formate & Trends)"
 
-Der Schalter bist du: Präfix `M&M: ` in Superlist setzen heißt „beim Kunden sichtbar machen", weglassen heißt „bleibt bei mir". Beides ist jederzeit umkehrbar — der Sync legt beim Kunden aber nur an, er löscht dort nie.
+Der Schalter bist du: Label `Maison` in Superlist setzen heißt „beim Kunden sichtbar machen", weglassen heißt „bleibt bei mir". Beides ist jederzeit umkehrbar — der Sync legt beim Kunden aber nur an, er löscht dort nie.
 
 ---
 
@@ -167,11 +206,13 @@ Ab dem stündlichen Normalbetrieb liegt ein Lauf typischerweise bei null bis fü
 
 ## Nächster Schritt
 
-Ich brauche noch drei Antworten:
+Ich brauche noch fünf Antworten:
 
 1. **Block 3** — die 9 Fuzzy-Vorschläge und die 3 mehrdeutigen Fälle: bestätigen oder verwerfen?
 2. **Block 3b** — Titel-Angleichung wie vorgeschlagen, inkl. der einen Ausnahme bei „Retail Media Data Sharing"?
-3. **Block 4** — die 4 Karteileichen: noch relevant oder abhaken?
+3. **Block 3c** — die 3 unklaren Label-Fälle (Trendscout, die zwei Nadine-Aufgaben).
+4. **Block 3c** — Präfix `M&M: ` aus den 19 Titeln entfernen? (Ohne Freigabe bleibt es stehen.)
+5. **Block 4** — die 4 Karteileichen: noch relevant oder abhaken?
 
 Bei **Block 5** ist entschieden (alle 36 nach Advisory) — sag nur Bescheid, falls die 2 „Idee:"-Zeilen und die 6 blockierten draußen bleiben sollen.
 

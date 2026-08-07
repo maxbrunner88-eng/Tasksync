@@ -47,21 +47,29 @@ Bei stündlichem Takt ist die Drift zwischen zwei Läufen klein — ein normaler
 Die Aufgaben-DB auf einer Kundenseite ist mit dem Kunden geteilt. Der Sync legt dort nur an, wenn **beide** Bedingungen erfüllt sind:
 
 1. die Superlist-Aufgabe liegt in der Liste des Kunden (Maison & Mood → 🟢 Advisory), **und**
-2. ihr Titel trägt ein Kundenpräfix (`M&M:`, `M&M BUG:`).
+2. sie trägt das Kundenlabel (Maison & Mood → `Maison`).
 
 Daraus folgt, so gewollt:
 
 - 🔵 Kaufland, 🟣 Private und 🟠 Home erreichen **niemals** eine Kunden-DB.
-- Advisory-Aufgaben ohne Präfix (z. B. „Teilnahme am Cologne Collective Day klären") bleiben in Superlist und Master Tasks.
-- **Der Schalter bist du:** Setzt du in Superlist `M&M: ` vor eine Aufgabe, wird sie beim Kunden sichtbar. Ohne Präfix nicht.
+- Advisory-Aufgaben ohne Kundenlabel (z. B. „Teilnahme am Cologne Collective Day klären") bleiben in Superlist und Master Tasks.
+- **Der Schalter bist du:** Setzt du in Superlist das Label `Maison`, wird die Aufgabe beim Kunden sichtbar. Ohne Label nicht.
 
-Die Gegenrichtung ist unbeschränkt — was in der Kunden-DB entsteht und dir gehört, kommt immer nach Superlist.
+Die Gegenrichtung ist unbeschränkt — was in der Kunden-DB entsteht und dir gehört, kommt immer nach Superlist, mit Label.
+
+## Kundenlabel
+
+Jede Kundenaufgabe in Advisory trägt das Label des Kunden. Der Sync setzt es und hält es — **entfernt wird es nie automatisch.** Nimmst du `Maison` von einer Aufgabe ab, fällt sie aus dem Kundenthemen-Test und wird nicht mehr zum Kunden geschrieben; die dort bestehende Zeile bleibt (gelöscht wird nie) und taucht im Report unter „Verwaist" auf.
+
+Andere Labels (`@Nadine`, `Blocker`, `Kai` …) fasst der Sync nicht an. Eine Aufgabe kann Labels mehrerer Kunden tragen und geht dann in beide Kunden-DBs.
+
+Pro Kunde konfigurierbar über `customers.<k>.superlistLabel`.
 
 ## Titel-Angleichung
 
 Jede verknüpfte Aufgabe führt **einen** kanonischen Titel, der in allen Stores durchgesetzt wird. Weicht ein Store ab, wird er korrigiert. Kanonisch wird der Titel der zuletzt geänderten Seite; bei Gleichstand Superlist.
 
-Geschrieben wird mit Präfix-Konvention: Superlist `M&M: <Titel>`, Kunden-DB und Master Tasks `<Titel>` — in der Kunden-DB wäre das Präfix nur Rauschen, dort ist ohnehin alles vom selben Kunden.
+Es gibt **kein Präfix mehr**: der Kunde steckt im Label, nicht im Titel. Dadurch ist der Superlist-Titel Zeichen für Zeichen identisch mit dem Notion-Titel — genau das macht auf einen Blick erkennbar, welche Einträge dieselbe Aufgabe sind.
 
 Im Erstlauf werden alle Titeländerungen vorher aufgelistet (alt → neu, pro Store). Danach läuft die Angleichung ohne Rückfrage.
 
@@ -93,6 +101,8 @@ Alles in `config/sync.config.json`, ohne Codeänderung umschaltbar:
 | `policy.notionSource` | `masterTasks` | Welche Notion-DB die zentrale To-do-Liste ist |
 | `policy.customerOwnerScope` | `["Max","Gemeinsam"]` | Welche Kunden-Aufgaben nach Superlist fließen. Nadines Aufgaben bleiben Notion-only und erscheinen nur im Report. |
 | `policy.customerDbWrite` | `customerTopicsOnly` | Was in eine Kunden-DB geschrieben werden darf. `never` schaltet die Richtung ganz ab. |
+| `policy.customerLabelPolicy` | `enforce` | Kundenlabel wird gesetzt und gehalten. `report` meldet nur. |
+| `customers.<k>.superlistLabel` | `Maison` | Das Kundenlabel in Superlist |
 | `policy.titlePolicy` | `canonical` | Ein Titel pro Aufgabe, in allen Stores durchgesetzt |
 | `policy.conflictRule` | `doneWins` | Ist etwas irgendwo abgehakt, wird es überall abgehakt |
 | `policy.schedule` | `hourly` | Vorgesehener Takt |

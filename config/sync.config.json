@@ -17,9 +17,12 @@
     "customerTopicTest": {
       "requireSuperlistList": true,
       "$requireSuperlistList": "Die Superlist-Aufgabe muss in der Liste liegen, die dem Kunden zugeordnet ist (customers.<k>.superlistList).",
-      "requireTitlePrefix": true,
-      "$requireTitlePrefix": "UND der Titel muss ein Kundenpraefix aus customers.<k>.titlePrefixes tragen. Beide Bedingungen zusammen, nie nur eine."
+      "requireLabel": true,
+      "$requireLabel": "UND sie muss das Kundenlabel tragen (customers.<k>.superlistLabel). Beide Bedingungen zusammen, nie nur eine. Das Label ist ein echtes Feld — es ersetzt das fruehere Titelpraefix als Kundenmarker."
     },
+
+    "customerLabelPolicy": "enforce",
+    "$customerLabelPolicy": "enforce | report. Bei 'enforce' setzt der Sync das Kundenlabel auf jeder Superlist-Aufgabe, die zu einem Kunden gehoert, und haelt es dort. Entfernt wird ein Label nie automatisch — das ist die Entscheidung des Nutzers.",
 
     "titlePolicy": "canonical",
     "$titlePolicy": "canonical | perStore. Bei 'canonical' fuehrt der Sync EINEN Titel pro Aufgabe in allen Stores. Ziel: der Nutzer erkennt auf einen Blick, welche Eintraege dieselbe Aufgabe sind.",
@@ -77,8 +80,12 @@
       "tasksDataSource": "collection://c52275a8-7be0-41c6-8b17-57368804526b",
       "tasksDatabaseUrl": "https://app.notion.com/p/02f9d74f1c0e44e888c5f439e6cd0f9c",
       "superlistList": "advisory",
-      "titlePrefixes": ["M&M:", "M&M BUG:", "Maison & Mood –", "Maison & Mood -"],
-      "writePrefix": "M&M: ",
+      "superlistLabel": "Maison",
+      "$superlistLabel": "Das Kundenlabel in Superlist. Existiert bereits und ist auf 21 aelteren Advisory-Aufgaben gesetzt. Ab jetzt der einzige Kundenmarker.",
+      "legacyTitlePrefixes": ["M&M:", "M&M BUG:", "Maison & Mood –", "Maison & Mood -"],
+      "$legacyTitlePrefixes": "Alte Konvention. Wird nur noch zum Erkennen und zum Abziehen beim Titelabgleich verwendet, nicht mehr zum Schreiben.",
+      "writePrefix": "",
+      "$writePrefix": "Leer: Titel werden ohne Praefix geschrieben. Der Kunde steckt im Label, nicht im Titel — dadurch ist der Superlist-Titel identisch mit dem Notion-Titel.",
       "props": {
         "titleProp": "Aufgabe",
         "doneProp": "Erledigt",
@@ -98,6 +105,10 @@
       "pageId": "35d228aa-70ec-81d4-abd3-e8c1e6527fe4",
       "tasksDataSource": null,
       "superlistList": "advisory",
+      "superlistLabel": "Marko",
+      "$superlistLabel": "Existiert in Superlist noch nicht. Wird beim ersten Bedarf angelegt.",
+      "legacyTitlePrefixes": [],
+      "writePrefix": "",
       "skip": true,
       "$skip": "Hat noch keine Aufgaben-DB. Wird uebersprungen, bis eine existiert."
     }
@@ -111,6 +122,7 @@
   },
 
   "matching": {
+    "$stripPrefixes": "Fuers Normalisieren beim Matching. Enthaelt weiterhin die Alt-Praefixe, weil Bestandsaufgaben sie noch tragen.",
     "stripPrefixes": ["M&M:", "M&M BUG:", "Nadine:", "Idee:", "ENTSCHEIDUNG:", "BUG:", "Migration Session 1:"],
     "stripTrailingParens": true,
     "jaccardThreshold": 0.6,

@@ -128,9 +128,11 @@ Danach das Kundenpraefix abziehen, falls vorhanden, und den kanonischen Titel in
 
 | Store | geschriebener Titel |
 |---|---|
-| Superlist | `<writePrefix><canonicalTitle>` bei Links mit Kunde, sonst `<canonicalTitle>` |
+| Superlist | `<canonicalTitle>` — der Kunde steckt im Label, nicht im Titel |
 | Master Tasks | `<canonicalTitle>` |
-| Kunden-DB | `<canonicalTitle>` (dort ist ohnehin alles vom selben Kunden, das Praefix waere Rauschen) |
+| Kunden-DB | `<canonicalTitle>` |
+
+Ueberall derselbe Titel, ohne Praefix. `customers.<k>.writePrefix` ist leer; ist dort doch ein Wert gesetzt, wird er in Superlist vorangestellt.
 
 Im **Erstlauf** wird jeder abweichende Titel im Report gelistet — alt → neu, pro Store. Erst nach Freigabe geschrieben. Im Normalbetrieb laeuft die Angleichung ohne Rueckfrage.
 
@@ -142,7 +144,7 @@ Im **Erstlauf** wird jeder abweichende Titel im Report gelistet — alt → neu,
 |---|---|
 | Superlist-Liste `L` | Master Tasks mit `Area = L`. In eine Kunden-DB **nur**, wenn der Kundenthemen-Test unten bestanden ist. |
 | Master Tasks, `Area = L` | Superlist-Liste `L` |
-| Kunden-DB, `Owner` ∈ `policy.customerOwnerScope` | Superlist (Liste laut `customers.<k>.superlistList`, Titel mit `writePrefix`) **und** Master Tasks mit passender `Area` |
+| Kunden-DB, `Owner` ∈ `policy.customerOwnerScope` | Superlist: Liste laut `customers.<k>.superlistList`, Titel unveraendert, **Kundenlabel sofort mitsetzen** — und Master Tasks mit passender `Area` |
 | Kunden-DB, `Owner` ausserhalb des Scope | **nichts anlegen.** Nur unter „Beim Kunden offen" in den Report. |
 
 Bereits erledigte Neuzugaenge werden **nicht** in andere Stores kopiert — nur registriert. Sonst regnet es abgehakte Altlasten.
@@ -154,17 +156,31 @@ Eine Kunden-Aufgaben-DB ist **mit dem Kunden geteilt** und enthaelt ausschliessl
 Der Sync legt in `customers.<k>.tasksDataSource` nur dann eine Zeile an, wenn **beide** Bedingungen erfuellt sind:
 
 1. die Superlist-Aufgabe liegt in `customers.<k>.superlistList` (fuer Maison & Mood: 🟢 Advisory), **und**
-2. ihr Titel traegt ein Praefix aus `customers.<k>.titlePrefixes` (`M&M:`, `M&M BUG:`, …).
+2. sie traegt das Label `customers.<k>.superlistLabel` (fuer Maison & Mood: `Maison`).
 
 Eine Bedingung allein genuegt nicht. Konsequenzen, die so gewollt sind:
 
-- Aufgaben aus 🔵 Kaufland, 🟣 Private und 🟠 Home erreichen **niemals** eine Kunden-DB — auch nicht mit passendem Praefix.
-- Aufgaben in 🟢 Advisory ohne Kundenpraefix (etwa „Teilnahme am Cologne Collective Day klaeren") bleiben Superlist und Master Tasks vorbehalten.
-- Willst du eine Aufgabe bewusst beim Kunden sichtbar machen, setzt du in Superlist das Praefix `M&M: ` davor. Das ist der Schalter.
+- Aufgaben aus 🔵 Kaufland, 🟣 Private und 🟠 Home erreichen **niemals** eine Kunden-DB — auch nicht mit gesetztem Label.
+- Aufgaben in 🟢 Advisory ohne Kundenlabel (etwa „Teilnahme am Cologne Collective Day klaeren") bleiben Superlist und Master Tasks vorbehalten.
+- Willst du eine Aufgabe bewusst beim Kunden sichtbar machen, setzt du in Superlist das Label `Maison`. Das ist der Schalter.
+
+**Das Label ist der Kundenmarker, nicht das Titelpraefix.** Die alte Konvention `M&M: ` im Titel ist abgeloest: sie steht nur noch in `legacyTitlePrefixes`, wird beim Matching abgezogen und beim Schreiben nicht mehr gesetzt (`writePrefix: ""`). Dadurch ist der Superlist-Titel identisch mit dem Notion-Titel — „eine Aufgabe, ein Titel" gilt dann woertlich.
 
 Aufgaben, die **in** der Kunden-DB entstanden sind, gehen immer nach Superlist — diese Richtung ist unbeschraenkt. Die Einschraenkung gilt nur fuer Schreibvorgaenge **in** die Kunden-DB.
 
 Steht `policy.customerDbWrite` auf `never`, werden in Kunden-DBs ueberhaupt keine Zeilen angelegt; die Richtung Kunde → Superlist laeuft weiter.
+
+### Kundenlabel setzen und halten
+
+Bei `policy.customerLabelPolicy == "enforce"` gilt fuer jede Superlist-Aufgabe, die ueber einen Link zu einem Kunden gehoert:
+
+- Fehlt das Kundenlabel → setzen mit `mcp__Superlist__add_label`.
+- Beim Anlegen einer neuen Superlist-Aufgabe aus einer Kunden-DB → Label sofort mitsetzen.
+- **Ein Label wird nie automatisch entfernt.** Nimmt der Nutzer `Maison` von einer Aufgabe, ist das seine Entscheidung: die Aufgabe faellt aus dem Kundenthemen-Test und wird ab dem naechsten Lauf nicht mehr in die Kunden-DB geschrieben. Die dort bereits bestehende Zeile bleibt (es wird nie geloescht) und erscheint unter „Verwaist" im Report.
+
+Eine Aufgabe kann Labels mehrerer Kunden tragen — dann gilt sie fuer beide und wird in beide Kunden-DBs geschrieben, sofern der Listen-Test jeweils passt. Andere Labels (`@Nadine`, `Blocker`, `Kai`, …) bleiben unberuehrt; der Sync fasst ausschliesslich Kundenlabels an.
+
+**Zwei Altlast-Konventionen in Advisory.** Der Bestand traegt den Kundenbezug teils als Label `Maison` (aeltere Aufgaben), teils als Titelpraefix `M&M: ` (neuere) — keine traegt beides. Der Erstlauf vereinheitlicht das: wo ein Alt-Praefix erkannt wird, wird das Label gesetzt; das Praefix selbst wird nur nach ausdruecklicher Freigabe aus den Titeln entfernt.
 
 Fuer jeden Neuzugang einen `key` vergeben (`tsk_` + 8 Hexzeichen, kollisionsfrei gegen die Registry) und ihn in den Notion-Zeilen als `Sync Key` setzen.
 
