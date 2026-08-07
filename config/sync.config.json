@@ -1,0 +1,105 @@
+{
+  "$comment": "TaskSync — Konfiguration. Alle IDs sind am 07.08.2026 aus den Live-Systemen ermittelt. Die vier 'policy'-Werte sind die im Plan angenommenen Defaults und hier ohne Codeänderung umschaltbar.",
+
+  "policy": {
+    "notionSource": "masterTasks",
+    "$notionSource": "masterTasks | newSyncDb | customersOnly",
+
+    "customerOwnerScope": ["Max", "Gemeinsam"],
+    "$customerOwnerScope": "Welche Owner-Werte aus den Kunden-DBs nach Superlist fliessen. Nicht gelistete Owner (z.B. Nadine) erscheinen nur im Report.",
+
+    "conflictRule": "doneWins",
+    "$conflictRule": "doneWins | newestWins",
+
+    "neverReopen": true,
+    "neverDelete": true,
+    "maxWritesPerRun": 25,
+    "$maxWritesPerRun": "Ueberschreitet ein Lauf diese Zahl, bricht er ab und schreibt nur den Report. Schutz gegen Registry-Verlust."
+  },
+
+  "superlist": {
+    "lists": {
+      "advisory": { "uuid": "ec808fbe-7599-4bd8-b52b-124cc40db28a", "title": "🟢 Advisory", "area": "Advisory" },
+      "kaufland": { "uuid": "fb0163b7-bc87-46e8-a990-1028b6ed28da", "title": "🔵 Kaufland", "area": "Kaufland" },
+      "private":  { "uuid": "0473db4f-317c-4bc6-94d3-291829756001", "title": "🟣 Private",  "area": "Private"  },
+      "home":     { "uuid": "6d73a1be-d35e-4cfa-a891-f9628e8ffcc5", "title": "🟠 Home",     "area": "Home"     }
+    },
+    "syncInbox": false,
+    "$syncInbox": "Superlist-Inbox ist aktuell leer und bleibt aussen vor; Tasks ohne Liste haben keine Area-Entsprechung."
+  },
+
+  "notion": {
+    "masterTasks": {
+      "dataSource": "collection://e3113d00-0bde-4cee-8077-bde717b20c85",
+      "databaseUrl": "https://app.notion.com/p/2fa2c15eb77f437f877d2bab1ac47f67",
+      "titleProp": "Title",
+      "areaProp": "Area",
+      "statusProp": "Status",
+      "dueProp": "Due Date",
+      "priorityProp": "Priority",
+      "completedAtProp": "Completed At",
+      "lastEditedProp": "Last Edited",
+      "syncKeyProp": "Sync Key",
+      "doneStates": ["Done", "Cancelled"],
+      "openStateDefault": "Inbox",
+      "doneStateWrite": "Done"
+    },
+    "customersDb": {
+      "dataSource": "collection://166495fc-d773-4a22-a4e3-15168f10dbac",
+      "databaseUrl": "https://app.notion.com/p/8326ba6fb3d7408285b7afa45d5231e7",
+      "titleProp": "Name"
+    }
+  },
+
+  "customers": {
+    "maison-mood": {
+      "name": "🏠 Maison & Mood",
+      "pageId": "35d228aa-70ec-8160-889c-da97a02fa877",
+      "tasksDataSource": "collection://c52275a8-7be0-41c6-8b17-57368804526b",
+      "tasksDatabaseUrl": "https://app.notion.com/p/02f9d74f1c0e44e888c5f439e6cd0f9c",
+      "superlistList": "advisory",
+      "titlePrefixes": ["M&M:", "M&M BUG:", "Maison & Mood –", "Maison & Mood -"],
+      "writePrefix": "M&M: ",
+      "props": {
+        "titleProp": "Aufgabe",
+        "doneProp": "Erledigt",
+        "statusProp": "Status",
+        "ownerProp": "Owner",
+        "areaProp": "Bereich",
+        "dueProp": "Fällig",
+        "priorityProp": "Priorität",
+        "noteProp": "Notiz",
+        "lastEditedProp": "Zuletzt bewegt",
+        "syncKeyProp": "Sync Key"
+      },
+      "$statusProp": "NICHT anfassen. 'Erledigt' ist laut Property-Beschreibung die einzige Wahrheit fuer erledigt/nicht erledigt; 'Status' ist orthogonal (viele Zeilen: Erledigt=YES bei Status=Offen)."
+    },
+    "marko-schilling": {
+      "name": "🏗️ Marko Schilling Bauunternehmen",
+      "pageId": "35d228aa-70ec-81d4-abd3-e8c1e6527fe4",
+      "tasksDataSource": null,
+      "superlistList": "advisory",
+      "skip": true,
+      "$skip": "Hat noch keine Aufgaben-DB. Wird uebersprungen, bis eine existiert."
+    }
+  },
+
+  "priorityMap": {
+    "$comment": "Superlist kennt none/high/medium/low, Master Tasks P1-P4, Kunden-DB P1/P2/P3/Dauerhaft.",
+    "superlistToMaster": { "high": "P1", "medium": "P2", "low": "P3", "none": null },
+    "masterToSuperlist": { "P1": "high", "P2": "medium", "P3": "low", "P4": "none" },
+    "customerToSuperlist": { "P1": "high", "P2": "medium", "P3": "low", "Dauerhaft": "none" }
+  },
+
+  "matching": {
+    "stripPrefixes": ["M&M:", "M&M BUG:", "Nadine:", "Idee:", "ENTSCHEIDUNG:", "BUG:", "Migration Session 1:"],
+    "stripTrailingParens": true,
+    "jaccardThreshold": 0.6,
+    "$jaccardThreshold": "Ab diesem Wert wird ein Paar als Vorschlag gemeldet. Automatisch verlinkt wird nur bei exaktem Normtitel-Treffer."
+  },
+
+  "paths": {
+    "links": "state/links.json",
+    "reports": "reports/"
+  }
+}
