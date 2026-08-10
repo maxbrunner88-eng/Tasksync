@@ -82,6 +82,22 @@
       "superlistList": "advisory",
       "superlistLabel": "Maison",
       "$superlistLabel": "Das Kundenlabel in Superlist. Existiert bereits und ist auf 21 aelteren Advisory-Aufgaben gesetzt. Ab jetzt der einzige Kundenmarker.",
+
+      "labelDerivation": {
+        "$comment": "Der Nutzer tippt Aufgaben von Hand und markiert den Kunden dabei im Titel, in wechselnden Schreibweisen — beobachtet allein am Wochenende 08.-09.08.: '@Max ... (Maison, P1)', '... | Maison P2', 'M&M Personalakte: ...'. Traegt eine Aufgabe eines dieser Muster, aber kein Label, setzt der Sync das Label nach und meldet es. So bleibt das Label der Marker, ohne dass der Nutzer seine Tippgewohnheiten aendern muss.",
+        "titlePatterns": ["M&M", "M+M", "Maison"],
+        "caseSensitive": false,
+        "reportEveryDerivation": true,
+        "$reportEveryDerivation": "Jede abgeleitete Zuordnung steht im Report. Ein Fehlgriff wuerde eine fremde Aufgabe zum Kunden schieben — das muss sichtbar bleiben."
+      },
+
+      "titleMarkers": {
+        "$comment": "Rauschen, das der Nutzer beim Tippen mitschreibt und das nicht in den kanonischen Titel gehoert. Wird beim Normalisieren und beim Angleichen abgezogen.",
+        "ownerPrefixes": ["@Max", "@Nadine"],
+        "trailingTags": ["(Maison, P1)", "(Maison, P2)", "(Maison, P3)", "| Maison P1", "| Maison P2", "| Maison P3"],
+        "priorityHints": { "P1": "high", "P2": "medium", "P3": "low" },
+        "$priorityHints": "Steht die Prioritaet im Titel, wird sie ins Prioritaetsfeld uebernommen statt im Text stehen zu bleiben."
+      },
       "legacyTitlePrefixes": ["M&M:", "M&M BUG:", "Maison & Mood –", "Maison & Mood -"],
       "$legacyTitlePrefixes": "Alte Konvention. Wird nur noch zum Erkennen und zum Abziehen beim Titelabgleich verwendet, nicht mehr zum Schreiben.",
       "writePrefix": "",

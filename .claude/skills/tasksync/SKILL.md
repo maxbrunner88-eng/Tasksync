@@ -170,6 +170,18 @@ Aufgaben, die **in** der Kunden-DB entstanden sind, gehen immer nach Superlist �
 
 Steht `policy.customerDbWrite` auf `never`, werden in Kunden-DBs ueberhaupt keine Zeilen angelegt; die Richtung Kunde → Superlist laeuft weiter.
 
+### Kundenlabel ableiten, wenn es fehlt
+
+Der Nutzer legt Aufgaben von Hand an und markiert den Kunden dabei **im Titel**, in wechselnden Schreibweisen. Beobachtet allein am Wochenende 08.–09.08.: `@Max … (Maison, P1)`, `… | Maison P2`, `M&M Personalakte: …`. Keine dieser Aufgaben trug das Label.
+
+Traegt eine Advisory-Aufgabe ein Muster aus `customers.<k>.labelDerivation.titlePatterns`, aber nicht das Kundenlabel → **Label nachsetzen** und die Ableitung im Report auffuehren (`reportEveryDerivation`). Erst danach greift der Kundenthemen-Test.
+
+Damit bleibt das Label der Marker, ohne dass der Nutzer seine Tippgewohnheiten aendern muss. Ein Fehlgriff wuerde eine fremde Aufgabe zum Kunden schieben — deshalb steht **jede** abgeleitete Zuordnung im Report, auch wenn sonst nichts zu melden ist.
+
+**Titel-Rauschen abziehen.** `customers.<k>.titleMarkers` listet, was der Nutzer beim Tippen mitschreibt und was nicht in den kanonischen Titel gehoert: Owner-Praefixe (`@Max`), angehaengte Tags (`(Maison, P2)`, `| Maison P2`). Diese werden beim Normalisieren entfernt. Steht darin eine Prioritaet (`P1`/`P2`/`P3`), wandert sie ueber `priorityHints` ins Prioritaetsfeld, statt im Titel stehen zu bleiben.
+
+Beispiel: `@Max Stammdaten-Feld im Personalreiter bauen (Maison, P2)` → kanonischer Titel `Stammdaten-Feld im Personalreiter bauen`, Label `Maison`, Prioritaet `medium`.
+
 ### Kundenlabel setzen und halten
 
 Bei `policy.customerLabelPolicy == "enforce"` gilt fuer jede Superlist-Aufgabe, die ueber einen Link zu einem Kunden gehoert:
