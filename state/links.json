@@ -681,6 +681,182 @@
       "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
       "customer": "maison-mood",
       "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a072",
+      "canonicalTitle": "Prozess Datenübergabe an den Steuerberater schriftlich ausarbeiten",
+      "superlist": {
+        "uuid": "36a8b581-e9f5-4589-9191-4a37906625df",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "3a6228aa-70ec-81e6-85c2-d75264dca420"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a073",
+      "canonicalTitle": "SEO/SEA: Fragenset technisches Website-Setup für die Grafikerin",
+      "superlist": {
+        "uuid": "adb80bd6-5181-4170-9e4f-c18e2353c034",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "3b3228aa-70ec-8171-84df-eccdb02a7ba8"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a074",
+      "canonicalTitle": "n8n-Umzug ins geteilte Projekt (Kundeninstanz) + Google-Suite-Signal",
+      "superlist": {
+        "uuid": "746f4957-b8b4-4457-a775-c4ff7282af70",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "3b3228aa-70ec-81e6-ad79-c1961b389330"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a075",
+      "canonicalTitle": "Session 2: Dashboard-Reiter Personal (Anlegen und Pflegen durch Nadine)",
+      "superlist": {
+        "uuid": "5c8aedb0-715f-4428-bd96-1de46f8d63f9",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "3b4228aa-70ec-81fc-81bb-d40e6a36e508"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a076",
+      "canonicalTitle": "HTS-Leipzig-Variante des B2B-One-Pagers ableiten",
+      "superlist": {
+        "uuid": "977066bf-e71e-4819-8177-a7d7ae65bcac",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "399228aa-70ec-8114-b4b5-d5fc1b26ed4b"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a077",
+      "canonicalTitle": "Server-Zugriffsrechte dokumentieren und an Nadine übergeben",
+      "superlist": {
+        "uuid": "fc36121e-622c-4275-84af-ae51133dcfea",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "399228aa-70ec-8128-920f-e09dc9bc3150"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a078",
+      "canonicalTitle": "Referenzvideos ins Dashboard integrieren",
+      "superlist": {
+        "uuid": "3a68e51b-aeea-478f-a5f3-5a9c0d481b39",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "399228aa-70ec-812f-a114-d4c7e98ed5a3"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a079",
+      "canonicalTitle": "Creator-Radar: Dedup- und Archiv-Strategie",
+      "superlist": {
+        "uuid": "8e059b95-12de-42b3-9363-a96d4064fcaa",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "399228aa-70ec-8160-ad78-e6ca3ba4cb53"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a080",
+      "canonicalTitle": "Berater-Parität WF 2.1 und WF 2.2 herstellen",
+      "superlist": {
+        "uuid": "98457870-5f9a-46bf-a8a0-5772db2e3e55",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "399228aa-70ec-8173-912c-c8e5fd413659"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a081",
+      "canonicalTitle": "Notion-Projektseite Reinigungsplanung aktualisieren",
+      "superlist": {
+        "uuid": "b8b6c761-ac9b-45ee-9fe5-408de691724f",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "399228aa-70ec-81ae-ac5c-c135c8cd206a"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
+    },
+    {
+      "key": "tsk_e1f0a082",
+      "canonicalTitle": "Guesty-WhatsApp-API prüfen statt eigenem Agenten",
+      "superlist": {
+        "uuid": "607fd1f9-e430-4e01-9d18-37e2e76da4e0",
+        "list": "advisory",
+        "label": "Maison"
+      },
+      "notionCustomer": {
+        "customer": "maison-mood",
+        "pageId": "399228aa-70ec-81f8-b607-e883df3b430b"
+      },
+      "$note": "Etappe 4: aus der Kunden-DB nach Advisory uebertragen.",
+      "customer": "maison-mood",
+      "state": "open"
     }
   ]
 }
