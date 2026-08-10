@@ -77,7 +77,7 @@
       "notionCustomer": { "customer": "maison-mood", "pageId": "399228aa-70ec-8150-8a37-d259408ddb9c" },
       "customer": "maison-mood", "state": "done" },
 
-    { "key": "tsk_e1f0a022", "canonicalTitle": "RK-Kalender: Filterleiste entfernen",
+    { "key": "tsk_e1f0a022", "canonicalTitle": "RK-Kalender Filterleiste entfernen",
       "superlist": { "uuid": "712a97b9-72ac-4ba8-80f7-e241659a5304", "list": "advisory" },
       "notionCustomer": { "customer": "maison-mood", "pageId": "39a228aa-70ec-812e-984a-f04a005a11c4" },
       "customer": "maison-mood", "state": "done" },
@@ -139,7 +139,7 @@
       "superlist": { "uuid": "f359dfb1-6d40-4a8b-8f9a-fb4e0d75ca62", "list": "advisory", "label": "Maison" },
       "notionCustomer": { "customer": "maison-mood", "pageId": "399228aa-70ec-81d8-93df-f8716b781b35" },
       "customer": "maison-mood", "state": "open" },
-    { "key": "tsk_e1f0a044", "canonicalTitle": "M&M Personalakte: Google-Drive-Zugang klären (blockiert Dokumenten-Upload)",
+    { "key": "tsk_e1f0a044", "canonicalTitle": "Personalakte: Google-Drive-Zugang klären (blockiert Dokumenten-Upload)",
       "superlist": { "uuid": "899e0b19-bfd0-46d8-b039-d8fd3a592f1b", "list": "advisory", "label": "Maison" },
       "$note": "Label aus dem Titelmarker 'M&M' abgeleitet.",
       "customer": "maison-mood", "state": "open" },
