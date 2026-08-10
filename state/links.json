@@ -155,6 +155,28 @@
       "superlist": { "uuid": "99cadcf4-a690-4652-a73d-a94c2320b635", "list": "advisory", "label": "Maison" },
       "superlistDuplicate": { "uuid": "ecc733aa-4931-43a6-9653-a2e44c0be166", "title": "@Max Stammdaten-Feld im Personalreiter bauen (Maison, P2)" },
       "$note": "Doppelt angelegt am 09.08. (18:16 und 20:56). Beide Fassungen hat der Nutzer am 10.08. 07:06 selbst abgehakt, bevor der Sync lief. Die spaetere traegt drei offene Unteraufgaben.",
+      "customer": "maison-mood", "state": "done" },
+
+    { "key": "tsk_e1f0a050", "canonicalTitle": "Notizfeld pro Reinigung in RK-Ansicht",
+      "superlist": { "uuid": "198d18f7-7d9c-45b8-8749-e7bc54f8bc7c", "list": "advisory", "label": "Maison" },
+      "customer": "maison-mood", "state": "done" },
+    { "key": "tsk_e1f0a051", "canonicalTitle": "BUG: Storno sendet 4 identische Nachrichten",
+      "superlist": { "uuid": "8577115a-d9e7-453a-bc0c-f9a49c5cd463", "list": "advisory", "label": "Maison" },
+      "$note": "Titel trug 'M&M BUG:'. 'BUG:' blieb stehen — das ist kein Kundenmarker.",
+      "customer": "maison-mood", "state": "done" },
+    { "key": "tsk_e1f0a052", "canonicalTitle": "Passwort-Gate vor Dashboard, dann erst Editierbarkeit",
+      "superlist": { "uuid": "45849670-3f5f-4d4b-8888-cfcdc5785878", "list": "advisory", "label": "Maison" },
+      "customer": "maison-mood", "state": "done" },
+    { "key": "tsk_e1f0a053", "canonicalTitle": "Retainer und Scope für den 24.07. vorbereiten",
+      "superlist": { "uuid": "996998bb-3ea6-49bb-a7b4-5d0dc18377bb", "list": "advisory", "label": "Maison" },
+      "customer": "maison-mood", "state": "done" },
+    { "key": "tsk_e1f0a054", "canonicalTitle": "ENTSCHEIDUNG RK-Kalender nach Standort trennen",
+      "superlist": { "uuid": "ab4f983b-a598-420a-b546-9b10c141799a", "list": "advisory", "label": "Maison" },
+      "$note": "'ENTSCHEIDUNG' blieb stehen — kein Kundenmarker, sondern Aufgabentyp.",
+      "customer": "maison-mood", "state": "done" },
+    { "key": "tsk_e1f0a055", "canonicalTitle": "Reinigungskalender editierbar machen + Reinigungsplan-Tab auflösen",
+      "superlist": { "uuid": "b14dc4f7-30d2-4738-80ed-34606ba79b23", "list": "advisory", "label": "Maison" },
+      "$note": "Titel trug das Praefix 'Maison & Mood – '.",
       "customer": "maison-mood", "state": "done" }
   ]
 }
